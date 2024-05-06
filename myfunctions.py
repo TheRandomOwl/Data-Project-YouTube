@@ -10,9 +10,19 @@ def negative(x):
 
 def filter_and(data, filters):
     """
-    >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
-    >>> filter_and(data, {'key1': 'apple', 'key2': 'tomato'})
-    [{'key1': 'apple', 'key2': 'tomato'}]
+    Filter the given data based on multiple filter conditions.
+
+    Args:
+        data (list): A list of dictionaries representing the data to be filtered.
+        filters (dict): A dictionary containing the filter conditions.
+
+    Returns:
+        list: A new list containing the filtered data.
+
+    Examples:
+        >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+        >>> filter_and(data, {'key1': 'apple', 'key2': 'tomato'})
+        [{'key1': 'apple', 'key2': 'tomato'}]
     """
     new_list = []
     for row in data:
@@ -27,9 +37,19 @@ def filter_and(data, filters):
 
 def filter_or(data, filters):
     """
-    >>> data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'pear', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
-    >>> filter_or(data, {'key1': 'apple', 'key2': 'potato'})
-    [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
+    Filter a list of dictionaries based on multiple OR conditions.
+
+    Args:
+        data (list): A list of dictionaries representing the data.
+        filters (dict): A dictionary containing the filter conditions.
+
+    Returns:
+        list: A new list of dictionaries that match any of the filter conditions.
+
+    Examples:
+        >>> data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'pear', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
+        >>> filter_or(data, {'key1': 'apple', 'key2': 'potato'})
+        [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
     """
     new_list = []
     if not filters:

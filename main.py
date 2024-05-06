@@ -30,7 +30,7 @@ def main():
     for i, value in enumerate(unique_values):
         print(f"{i+1}. {value}")
 
-    pprint.pprint(filter_data(data, {'Model':'DC9', 'Air.carrier':'Air Canada'}))
+    pprint.pprint(filter_and(data, {'Model':'DC9', 'Country': 'United States'}))
 
 if __name__ == '__main__':
     main()

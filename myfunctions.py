@@ -8,10 +8,10 @@ def negative(x):
 
     return -x
 
-def filter_data(data, filters):
+def filter_and(data, filters):
     """
     >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
-    >>> filter_data(data, {'key1': 'apple', 'key2': 'tomato'})
+    >>> filter_and(data, {'key1': 'apple', 'key2': 'tomato'})
     [{'key1': 'apple', 'key2': 'tomato'}]
     """
     new_list = []
@@ -23,6 +23,23 @@ def filter_data(data, filters):
                 break
         if match:
             new_list.append(row)
+    return new_list
+
+def filter_or(data, filters):
+    """
+    >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    >>> filter_or(data, {'key1': 'apple'})
+    [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    """
+    new_list = []
+    if not filters:
+        return data
+    
+    for row in data:
+        for key, value in filters.items():
+            if row.get(key) == value:
+                new_list.append(row)
+                break
     return new_list
 
 if __name__ == '__main__':

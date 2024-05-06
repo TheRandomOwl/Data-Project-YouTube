@@ -31,16 +31,16 @@ def test_filter_and():
     assert filter_and(data, filters) == data
 
 def test_filter_or():
-    data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, 
+            {'key1': 'pear', 'key2': 'tomato', 'key3': 'orange'}, 
+            {'key1': 'orange', 'key2': 'potato', 'key3': 'carrot'}
+            ]
     
-    filters = {'key1': 'apple'}
-    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    filters = {'key1': 'orange', 'key3': 'banana'}
+    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'carrot'}]
 
-    filters = {'key2': 'tomato'}
-    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}]
-
-    filters = {'key1': 'banana'}
-    assert filter_or(data, filters) == []
+    filters = {'key1': 'apple', 'key2': 'cherry'}
+    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}]
 
     filters = {}
     assert filter_or(data, filters) == data

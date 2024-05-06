@@ -27,9 +27,9 @@ def filter_and(data, filters):
 
 def filter_or(data, filters):
     """
-    >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
-    >>> filter_or(data, {'key1': 'apple'})
-    [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    >>> data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'pear', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
+    >>> filter_or(data, {'key1': 'apple', 'key2': 'potato'})
+    [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
     """
     new_list = []
     if not filters:

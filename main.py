@@ -1,3 +1,7 @@
+""" 
+CSV file: AviationData.csv
+Kaggle: https://www.kaggle.com/datasets/yassereleraky/aviation-accident-ntsb
+"""
 from myfunctions import *
 import csv
 import pprint

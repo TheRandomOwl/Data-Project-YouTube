@@ -1,13 +1,3 @@
-def negative(x):
-    """
-    >>> negative(5)
-    -5
-    >>> negative(-5)
-    5
-    """
-
-    return -x
-
 def filter_and(data, filters):
     """
     Filter the given data based on multiple filter conditions.

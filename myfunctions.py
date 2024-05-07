@@ -88,6 +88,77 @@ def entry_max(data, key):
             return {}
     return max_entry
 
+def avg_val(data, key):
+    """
+    Calculate the average value of a key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to calculate the average value.
+
+    Returns:
+        float: The average value of the key in the list of dictionaries.
+               If the key does not exist in any of the dictionaries, 0 is returned.
+               If the list is empty, 0 is returned.
+
+    Examples:
+        >>> data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5, 'key2': 6}]
+        >>> avg_val(data, 'key1')
+        3.0
+        >>> avg_val(data, 'key2')
+        4.0
+        >>> avg_val(data, 'nonexistent key')
+        0
+        >>> avg_val([], 'key1')
+        0
+    """
+    if data == []:
+        return 0
+    total = 0
+    count = 0
+    for entry in data:
+        if key in entry:
+            try:
+                total += int(entry[key])
+                count += 1
+            except ValueError:
+                # skip invalid non int entries
+                pass
+    if count == 0:
+        return 0
+    return total / count
+
+def total_amount(data, key):
+    """
+    Calculate the total amount of a key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to calculate the total amount.
+
+    Returns:
+        int: The total amount of the key in the list of dictionaries.
+             If the key does not exist in any of the dictionaries, 0 is returned.
+
+    Examples:
+        >>> data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
+        >>> total_amount(data, 'key1')
+        9
+        >>> total_amount(data, 'key2')
+        16
+        >>> total_amount(data, 'nonexistent key')
+        0
+    """
+    total = 0
+    for entry in data:
+        if key in entry:
+            try:
+                total += int(entry[key])
+            except ValueError:
+                # skip invalid non int entries
+                pass
+    return total
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

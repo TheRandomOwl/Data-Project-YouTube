@@ -75,9 +75,9 @@ def entry_max(data, key):
               If the list is empty or the key does not exist in any of the dictionaries, an empty dictionary is returned.
 
     Examples:
-        >>> data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5, 'key2': 6}, {'key1': 'invalid entry', 'key2': 4}]
+        >>> data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
         >>> entry_max(data, 'key1')
-        {'key1': 5, 'key2': 6}
+        {'key1': '5', 'key2': '6'}
         >>> entry_max(data, 'nonexistent key')
         {}
         >>> entry_max([], 'key2')
@@ -88,10 +88,10 @@ def entry_max(data, key):
     max_entry = data[0]
     for entry in data:
         try:
-            if entry[key] > max_entry[key]:
+            if int(entry[key]) > int(max_entry[key]):
                 max_entry = entry
-        except TypeError:
-            # skip invalid entries
+        except ValueError:
+            # skip invalid non int entries
             pass
         except KeyError:
             # return empty dictionary if key does not exist

@@ -142,25 +142,25 @@ def avg_val(data, key):
         return 0
     return total / count
 
-def total_amount(data, key):
+def total_sum(data, key):
     """
-    Calculate the total amount of a key in a list of dictionaries.
+    Calculate the total sum of a key in a list of dictionaries.
 
     Args:
         data (list): A list of dictionaries.
-        key (str): The key to calculate the total amount.
+        key (str): The key to calculate the sum.
 
     Returns:
-        int: The total amount of the key in the list of dictionaries.
+        int: The sum of the key in the list of dictionaries.
              If the key does not exist in any of the dictionaries, 0 is returned.
 
     Examples:
         >>> data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
-        >>> total_amount(data, 'a')
+        >>> total_sum(data, 'a')
         9
-        >>> total_amount(data, 'b')
+        >>> total_sum(data, 'b')
         16
-        >>> total_amount(data, 'nonexistent key')
+        >>> total_sum(data, 'nonexistent key')
         0
     """
     total = 0

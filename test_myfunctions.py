@@ -71,19 +71,19 @@ def test_avg_val():
     data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
     assert avg_val(data, 'c') == 0
 
-def test_total_amount():
+def test_total_sum():
     data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
-    assert total_amount(data, 'a') == 9
-    assert total_amount(data, 'b') == 16
+    assert total_sum(data, 'a') == 9
+    assert total_sum(data, 'b') == 16
 
     data = [{'a': 1}, {'a': 3}, {'a': 5}]
-    assert total_amount(data, 'a') == 9
+    assert total_sum(data, 'a') == 9
 
     data = []
-    assert total_amount(data, 'a') == 0
+    assert total_sum(data, 'a') == 0
 
     data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
-    assert total_amount(data, 'c') == 0
+    assert total_sum(data, 'c') == 0
 
 if __name__ == '__main__':
     test_filter_or()

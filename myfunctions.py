@@ -90,23 +90,25 @@ def entry_max(data, key):
         {'a': '1', 'b': '3'}
         >>> entry_max([{'a': 'x'}, {'a': 'y'}], 'a')
         {}
+        >>> entry_max([{'a': 'x'}, {'a': 'y'}, {'a': '1'}, {'a': '2'}], 'a')
+        {'a': '2'}
     """
     if data == []:
         return {}
-    max_entry = data[0]
+    max_entry = None
+    max_value = float('-inf')
     for entry in data:
-        try:
-            if int(entry[key]) > int(max_entry[key]):
-                max_entry = entry
-        except ValueError:
-            # skip invalid non int entries
-            pass
-        except KeyError:
-            # return empty dictionary if key does not exist
-            return {}
-    try:
-        int(max_entry[key])
-    except ValueError:
+        if key in entry:
+            value = entry[key]
+            try:
+                converted_value = int(value)
+                if converted_value > max_value:
+                    max_value = converted_value
+                    max_entry = entry
+            except ValueError:
+                # skip invalid non int entries
+                pass
+    if max_entry is None:
         return {}
     return max_entry
 
@@ -134,23 +136,25 @@ def entry_min(data, key):
         {'a': '1', 'b': '3'}
         >>> entry_min([{'a': 'x'}, {'a': 'y'}], 'a')
         {}
+        >>> entry_min([{'a': 'x'}, {'a': 'y'}, {'a': '1'}, {'a': '2'}], 'a')
+        {'a': '1'}
     """
     if data == []:
         return {}
-    min_entry = data[0]
+    min_entry = None
+    min_value = float('inf')
     for entry in data:
-        try:
-            if int(entry[key]) < int(min_entry[key]):
-                min_entry = entry
-        except ValueError:
-            # skip invalid non int entries
-            pass
-        except KeyError:
-            # return empty dictionary if key does not exist
-            return {}
-    try:
-        int(min_entry[key])
-    except ValueError:
+        if key in entry:
+            value = entry[key]
+            try:
+                converted_value = int(value)
+                if converted_value < min_value:
+                    min_entry = entry
+                    min_value = converted_value
+            except ValueError:
+                # skip invalid non int entries
+                pass
+    if min_entry is None:
         return {}
     return min_entry
 
@@ -306,6 +310,7 @@ def least_frequent(data, key):
         return ''
     least_frequent_value = min(freq_dict, key=freq_dict.get)
     return least_frequent_value
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

@@ -10,9 +10,9 @@ def filter_and(data, filters):
         list: A new list containing the filtered data.
 
     Examples:
-        >>> data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
-        >>> filter_and(data, {'key1': 'apple', 'key2': 'tomato'})
-        [{'key1': 'apple', 'key2': 'tomato'}]
+        >>> data = [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+        >>> filter_and(data, {'a': 'apple', 'b': 'tomato'})
+        [{'a': 'apple', 'b': 'tomato'}]
     """
     new_list = []
     for row in data:
@@ -37,9 +37,11 @@ def filter_or(data, filters):
         list: A new list of dictionaries that match any of the filter conditions.
 
     Examples:
-        >>> data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'pear', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
-        >>> filter_or(data, {'key1': 'apple', 'key2': 'potato'})
-        [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'banana'}]
+        >>> data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
+        >>> filter_or(data, {'a': 'apple', 'b': 'potato'})
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
+        >>> filter_or(data, {'a': ('apple', 'orange')})
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
     """
     new_list = []
     if not filters:
@@ -47,9 +49,14 @@ def filter_or(data, filters):
     
     for row in data:
         for key, value in filters.items():
-            if row.get(key) == value:
-                new_list.append(row)
-                break
+            if isinstance(value, tuple):
+                if row.get(key) in value:
+                    new_list.append(row)
+                    break
+            else:
+                if row.get(key) == value:
+                    new_list.append(row)
+                    break
     return new_list
 
 def entry_max(data, key):
@@ -65,12 +72,12 @@ def entry_max(data, key):
               If the list is empty or the key does not exist in any of the dictionaries, an empty dictionary is returned.
 
     Examples:
-        >>> data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
-        >>> entry_max(data, 'key1')
-        {'key1': '5', 'key2': '6'}
+        >>> data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
+        >>> entry_max(data, 'a')
+        {'a': '5', 'b': '6'}
         >>> entry_max(data, 'nonexistent key')
         {}
-        >>> entry_max([], 'key2')
+        >>> entry_max([], 'b')
         {}
     """
     if data == []:
@@ -102,14 +109,14 @@ def avg_val(data, key):
                If the list is empty, 0 is returned.
 
     Examples:
-        >>> data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5, 'key2': 6}]
-        >>> avg_val(data, 'key1')
+        >>> data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
+        >>> avg_val(data, 'a')
         3.0
-        >>> avg_val(data, 'key2')
+        >>> avg_val(data, 'b')
         4.0
         >>> avg_val(data, 'nonexistent key')
         0
-        >>> avg_val([], 'key1')
+        >>> avg_val([], 'a')
         0
     """
     if data == []:
@@ -141,10 +148,10 @@ def total_amount(data, key):
              If the key does not exist in any of the dictionaries, 0 is returned.
 
     Examples:
-        >>> data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
-        >>> total_amount(data, 'key1')
+        >>> data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
+        >>> total_amount(data, 'a')
         9
-        >>> total_amount(data, 'key2')
+        >>> total_amount(data, 'b')
         16
         >>> total_amount(data, 'nonexistent key')
         0

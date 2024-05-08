@@ -1,74 +1,83 @@
 from myfunctions import *
 
 def test_filter_and():
-    data = [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
-    filters = {'key1': 'apple', 'key2': 'tomato'}
-    assert filter_and(data, filters) == [{'key1': 'apple', 'key2': 'tomato'}]
+    data = [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+    filters = {'a': 'apple', 'b': 'tomato'}
+    assert filter_and(data, filters) == [{'a': 'apple', 'b': 'tomato'}]
 
-    filters = {'key1': 'pear', 'key2': 'tomato'}
-    assert filter_and(data, filters) == [{'key1': 'pear', 'key2': 'tomato'}]
+    filters = {'a': 'pear', 'b': 'tomato'}
+    assert filter_and(data, filters) == [{'a': 'pear', 'b': 'tomato'}]
 
-    filters = {'key1': 'apple', 'key2': 'potato'}
-    assert filter_and(data, filters) == [{'key1': 'apple', 'key2': 'potato'}]
+    filters = {'a': 'apple', 'b': 'potato'}
+    assert filter_and(data, filters) == [{'a': 'apple', 'b': 'potato'}]
 
-    filters = {'key1': 'banana', 'key2': 'tomato'}
+    filters = {'a': 'banana', 'b': 'tomato'}
     assert filter_and(data, filters) == []
 
-    filters = {'key1': 'apple'}
-    assert filter_and(data, filters) == [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'apple', 'key2': 'potato'}]
+    filters = {'a': 'apple'}
+    assert filter_and(data, filters) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
 
-    filters = {'key2': 'tomato'}
-    assert filter_and(data, filters) == [{'key1': 'apple', 'key2': 'tomato'}, {'key1': 'pear', 'key2': 'tomato'}]
+    filters = {'b': 'tomato'}
+    assert filter_and(data, filters) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}]
 
     filters = {}
     assert filter_and(data, filters) == data
 
 def test_filter_or():
-    data = [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, 
-            {'key1': 'pear', 'key2': 'tomato', 'key3': 'orange'}, 
-            {'key1': 'orange', 'key2': 'potato', 'key3': 'carrot'}
+    data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, 
+            {'a': 'pear', 'b': 'tomato', 'c': 'orange'}, 
+            {'a': 'orange', 'b': 'potato', 'c': 'carrot'}
             ]
     
-    filters = {'key1': 'orange', 'key3': 'banana'}
-    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}, {'key1': 'orange', 'key2': 'potato', 'key3': 'carrot'}]
+    filters = {'a': 'orange', 'c': 'banana'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
 
-    filters = {'key1': 'apple', 'key2': 'cherry'}
-    assert filter_or(data, filters) == [{'key1': 'apple', 'key2': 'tomato', 'key3': 'banana'}]
+    filters = {'a': 'apple', 'b': 'cherry'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}]
 
     filters = {}
     assert filter_or(data, filters) == data
 
+    filters = {'a': ('apple', 'orange')}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+
+    filters = {'a': ('apple', 'orange'), 'b': 'potato'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
 def test_avg_val():
-    data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
-    assert avg_val(data, 'key1') == 3
-    assert avg_val(data, 'key2') == 4
+    data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
+    assert avg_val(data, 'a') == 3
+    assert avg_val(data, 'b') == 4
 
-    data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5}]
-    assert avg_val(data, 'key1') == 3
-    assert avg_val(data, 'key2') == 3
+    data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5}]
+    assert avg_val(data, 'a') == 3
+    assert avg_val(data, 'b') == 3
 
-    data = [{'key1': 1}, {'key1': 3}, {'key1': 5}]
-    assert avg_val(data, 'key1') == 3
+    data = [{'a': 1}, {'a': 3}, {'a': 5}]
+    assert avg_val(data, 'a') == 3
 
     data = []
-    assert avg_val(data, 'key1') == 0
+    assert avg_val(data, 'a') == 0
 
-    data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5, 'key2': 6}]
-    assert avg_val(data, 'key3') == 0
+    data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
+    assert avg_val(data, 'c') == 0
 
 def test_total_amount():
-    data = [{'key1': '1', 'key2': '2'}, {'key1': '3', 'key2': '4'}, {'key1': '5', 'key2': '6'}, {'key1': 'invalid entry', 'key2': '4'}]
-    assert total_amount(data, 'key1') == 9
-    assert total_amount(data, 'key2') == 16
+    data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
+    assert total_amount(data, 'a') == 9
+    assert total_amount(data, 'b') == 16
 
-    data = [{'key1': 1}, {'key1': 3}, {'key1': 5}]
-    assert total_amount(data, 'key1') == 9
+    data = [{'a': 1}, {'a': 3}, {'a': 5}]
+    assert total_amount(data, 'a') == 9
 
     data = []
-    assert total_amount(data, 'key1') == 0
+    assert total_amount(data, 'a') == 0
 
-    data = [{'key1': 1, 'key2': 2}, {'key1': 3, 'key2': 4}, {'key1': 5, 'key2': 6}]
-    assert total_amount(data, 'key3') == 0
+    data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
+    assert total_amount(data, 'c') == 0
 
 if __name__ == '__main__':
     test_filter_or()

@@ -86,6 +86,10 @@ def entry_max(data, key):
         {}
         >>> entry_max([], 'b')
         {}
+        >>> entry_max([{'a': '1', 'b': '3'}, {'a': '1', 'b': '4'}], 'a')
+        {'a': '1', 'b': '3'}
+        >>> entry_max([{'a': 'x'}, {'a': 'y'}], 'a')
+        {}
     """
     if data == []:
         return {}
@@ -100,6 +104,10 @@ def entry_max(data, key):
         except KeyError:
             # return empty dictionary if key does not exist
             return {}
+    try:
+        int(max_entry[key])
+    except ValueError:
+        return {}
     return max_entry
 
 def avg_val(data, key):

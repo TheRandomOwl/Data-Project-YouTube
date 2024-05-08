@@ -10,17 +10,24 @@ def filter_and(data, filters):
         list: A new list containing the filtered data.
 
     Examples:
-        >>> data = [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+        >>> data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
         >>> filter_and(data, {'a': 'apple', 'b': 'tomato'})
-        [{'a': 'apple', 'b': 'tomato'}]
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}]
+        >>> filter_and(data, {'a': ('apple', 'pear'), 'b': 'tomato'})
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}]
     """
     new_list = []
     for row in data:
         match = True
         for key, value in filters.items():
-            if row.get(key) != value:
-                match = False
-                break
+            if isinstance(value, tuple):
+                if row.get(key) not in value:
+                    match = False
+                    break
+            else:
+                if row.get(key) != value:
+                    match = False
+                    break
         if match:
             new_list.append(row)
     return new_list

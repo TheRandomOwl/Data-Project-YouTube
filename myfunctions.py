@@ -110,6 +110,50 @@ def entry_max(data, key):
         return {}
     return max_entry
 
+def entry_min(data, key):
+    """
+    Find the entry with the minimum value for the given key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to compare the values.
+
+    Returns:
+        dict: The dictionary entry with the minimum value for the given key.
+              If the list is empty or the key does not exist in any of the dictionaries, an empty dictionary is returned.
+
+    Examples:
+        >>> data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
+        >>> entry_min(data, 'a')
+        {'a': '1', 'b': '2'}
+        >>> entry_min(data, 'nonexistent key')
+        {}
+        >>> entry_min([], 'b')
+        {}
+        >>> entry_min([{'a': '1', 'b': '3'}, {'a': '1', 'b': '4'}], 'a')
+        {'a': '1', 'b': '3'}
+        >>> entry_min([{'a': 'x'}, {'a': 'y'}], 'a')
+        {}
+    """
+    if data == []:
+        return {}
+    min_entry = data[0]
+    for entry in data:
+        try:
+            if int(entry[key]) < int(min_entry[key]):
+                min_entry = entry
+        except ValueError:
+            # skip invalid non int entries
+            pass
+        except KeyError:
+            # return empty dictionary if key does not exist
+            return {}
+    try:
+        int(min_entry[key])
+    except ValueError:
+        return {}
+    return min_entry
+
 def avg_val(data, key):
     """
     Calculate the average value of a key in a list of dictionaries.

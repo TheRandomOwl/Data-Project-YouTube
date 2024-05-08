@@ -23,6 +23,12 @@ def test_filter_and():
     filters = {}
     assert filter_and(data, filters) == data
 
+    filters = {'a': ('apple', 'pear'), 'b': 'potato'}
+    assert filter_and(data, filters) == [{'a': 'apple', 'b': 'potato'}]
+
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_and(data, filters) == []
+
 def test_filter_or():
     data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, 
             {'a': 'pear', 'b': 'tomato', 'c': 'orange'}, 

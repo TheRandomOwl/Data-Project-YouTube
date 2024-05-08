@@ -173,6 +173,87 @@ def total_sum(data, key):
                 pass
     return total
 
+def most_frequent(data, key):
+    """
+    Find the most frequent value of a key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to find the most frequent value.
+
+    Returns:
+        str: The most frequent value of the key in the list of dictionaries.
+             If the key does not exist in any of the dictionaries, an empty string is returned.
+             If there are multiple values with the same frequency, the first value encountered is returned.
+
+    Examples:
+        >>> data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'apple', 'b': 'potato', 'c': 'banana'}]
+        >>> most_frequent(data, 'a')
+        'apple'
+        >>> most_frequent(data, 'b')
+        'tomato'
+        >>> most_frequent(data, 'nonexistent key')
+        ''
+        >>> most_frequent([], 'a')
+        ''
+        >>> most_frequent([{'a': 1}, {'a': 2}, {'a': 2}, {'a': 1}], 'a')
+        1
+    """
+    if data == []:
+        return ''
+    freq_dict = {}
+    for entry in data:
+        if key in entry:
+            value = entry[key]
+            if value in freq_dict:
+                freq_dict[value] += 1
+            else:
+                freq_dict[value] = 1
+    if not freq_dict:
+        return ''
+    most_frequent_value = max(freq_dict, key=freq_dict.get)
+    return most_frequent_value
+
+def least_frequent(data, key):
+    """
+    Find the least frequent value of a key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to find the least frequent value.
+
+    Returns:
+        str: The least frequent value of the key in the list of dictionaries.
+             If the key does not exist in any of the dictionaries, an empty string is returned.
+             If there are multiple values with the same frequency, the first value encountered is returned.
+
+    Examples:
+        >>> data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'apple', 'b': 'potato', 'c': 'banana'}]
+        >>> least_frequent(data, 'a')
+        'pear'
+        >>> least_frequent(data, 'b')
+        'potato'
+        >>> least_frequent(data, 'nonexistent key')
+        ''
+        >>> least_frequent([], 'a')
+        ''
+        >>> least_frequent([{'a': 1}, {'a': 2}, {'a': 2}, {'a': 1}], 'a')
+        1
+    """
+    if data == []:
+        return ''
+    freq_dict = {}
+    for entry in data:
+        if key in entry:
+            value = entry[key]
+            if value in freq_dict:
+                freq_dict[value] += 1
+            else:
+                freq_dict[value] = 1
+    if not freq_dict:
+        return ''
+    least_frequent_value = min(freq_dict, key=freq_dict.get)
+    return least_frequent_value
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

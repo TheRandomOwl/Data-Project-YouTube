@@ -334,7 +334,7 @@ def least_frequent(data, key):
     least_frequent_value = min(freq_dict, key=freq_dict.get)
     return least_frequent_value
 
-def get_col(data, key):
+def get_column(data, key):
     """
     Get a list of values for a specific key in a list of dictionaries.
 
@@ -347,13 +347,13 @@ def get_col(data, key):
 
     Examples:
         >>> data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
-        >>> get_col(data, 'a')
+        >>> get_column(data, 'a')
         [1, 3, 5]
-        >>> get_col(data, 'b')
+        >>> get_column(data, 'b')
         [2, 4, 6]
-        >>> get_col(data, 'nonexistent key')
+        >>> get_column(data, 'nonexistent key')
         []
-        >>> get_col([], 'a')
+        >>> get_column([], 'a')
         []
     """
     return list(set([entry[key] for entry in data if key in entry]))

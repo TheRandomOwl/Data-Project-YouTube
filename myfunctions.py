@@ -339,8 +339,8 @@ def get_col(data, key):
         >>> get_col([], 'a')
         []
     """
-    return list(set([entry[key] for entry in data if key in entry])
-)
+    return list(set([entry[key] for entry in data if key in entry]))
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

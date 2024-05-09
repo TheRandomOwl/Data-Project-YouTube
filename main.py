@@ -7,8 +7,11 @@ from myfunctions import *
 import csv
 
 def top_youtuber_by_country(data, country):
-    filters = {'Country': country}
-    return entry_max(filter_or(data, filters), 'subscribers')
+    return entry_min(filter_or(data, {'Country': country}), 'country_rank')
+
+def print_options():
+    print("1. View top YouTube channel by country")
+    print("q to Exit")
 
 def main():
     # get directory for csv file AviationData.csv
@@ -22,18 +25,26 @@ def main():
         data = list(reader)
     # user menu
     while True:
-        print("1. View top YouTube channel by country")
-        print("2. Exit")
+        print_options()
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            country = input("Enter the country: ")
-            top_youtuber = top_youtuber_by_country(data, country)
-            print(f"The top YouTube channel in {country} is {top_youtuber['Youtuber']} with {top_youtuber['subscribers']} subscribers.")
-        elif choice == "2":
+            # list all countries
+            print(get_column(filter_or(data, {'Country': 'nan'}, True), 'Country'))
+            while True:
+                country = input("Enter the country: ").title()
+                if country not in get_column(data, 'Country'):
+                    print("Invalid country. Please try again.")
+                    continue
+                else:
+                    break
+            top_channel = top_youtuber_by_country(data, country)
+            print(f"The top YouTube channel in {country} is {top_channel['Youtuber']} with {top_channel['subscribers']} subscribers.")
+        elif choice.lower() == "q":
             break
         else:
             print("Invalid choice. Please try again.")
+            continue
 
 if __name__ == '__main__':
     main()

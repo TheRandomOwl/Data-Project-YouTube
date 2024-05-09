@@ -71,9 +71,11 @@ def test_avg_val():
     data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
     assert avg_val(data, 'c') == 0
 
+    avg_val([{'a': '2E+2'}, {'a': '5.5'}], 'a') == 102.75
+
 def test_total_sum():
-    data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
-    assert total_sum(data, 'a') == 9
+    data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}, {'a': '1E+0'}]
+    assert total_sum(data, 'a') == 10
     assert total_sum(data, 'b') == 16
 
     data = [{'a': 1}, {'a': 3}, {'a': 5}]
@@ -89,3 +91,4 @@ if __name__ == '__main__':
     test_filter_or()
     test_filter_and()
     test_avg_val()
+    test_total_sum()

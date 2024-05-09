@@ -92,6 +92,8 @@ def entry_max(data, key):
         {}
         >>> entry_max([{'a': 'x'}, {'a': 'y'}, {'a': '1'}, {'a': '2'}], 'a')
         {'a': '2'}
+        >>> entry_max([{'a': '2.28E+11'}, {'a': '2'}], 'a')
+        {'a': '2.28E+11'}
     """
     if data == []:
         return {}
@@ -101,12 +103,12 @@ def entry_max(data, key):
         if key in entry:
             value = entry[key]
             try:
-                converted_value = int(value)
+                converted_value = float(value)
                 if converted_value > max_value:
                     max_value = converted_value
                     max_entry = entry
             except ValueError:
-                # skip invalid non int entries
+                # skip invalid non float entries
                 pass
     if max_entry is None:
         return {}
@@ -138,6 +140,8 @@ def entry_min(data, key):
         {}
         >>> entry_min([{'a': 'x'}, {'a': 'y'}, {'a': '1'}, {'a': '2'}], 'a')
         {'a': '1'}
+        >>> entry_min([{'a': '2.28E-11'}, {'a': '2'}], 'a')
+        {'a': '2.28E-11'}
     """
     if data == []:
         return {}
@@ -147,12 +151,12 @@ def entry_min(data, key):
         if key in entry:
             value = entry[key]
             try:
-                converted_value = int(value)
+                converted_value = float(value)
                 if converted_value < min_value:
                     min_entry = entry
                     min_value = converted_value
             except ValueError:
-                # skip invalid non int entries
+                # skip invalid non float entries
                 pass
     if min_entry is None:
         return {}
@@ -181,6 +185,8 @@ def avg_val(data, key):
         0
         >>> avg_val([], 'a')
         0
+        >>> avg_val([{'a': '2E+2'}, {'a': '5.5'}], 'a')
+        102.75
     """
     if data == []:
         return 0
@@ -189,7 +195,7 @@ def avg_val(data, key):
     for entry in data:
         if key in entry:
             try:
-                total += int(entry[key])
+                total += float(entry[key])
                 count += 1
             except ValueError:
                 # skip invalid non int entries
@@ -223,7 +229,7 @@ def total_sum(data, key):
     for entry in data:
         if key in entry:
             try:
-                total += int(entry[key])
+                total += float(entry[key])
             except ValueError:
                 # skip invalid non int entries
                 pass
@@ -311,6 +317,30 @@ def least_frequent(data, key):
     least_frequent_value = min(freq_dict, key=freq_dict.get)
     return least_frequent_value
 
+def get_col(data, key):
+    """
+    Get a list of values for a specific key in a list of dictionaries.
+
+    Args:
+        data (list): A list of dictionaries.
+        key (str): The key to extract the values.
+
+    Returns:
+        list: A list of values for the specified key in the list of dictionaries.
+
+    Examples:
+        >>> data = [{'a': 1, 'b': 2}, {'a': 3, 'b': 4}, {'a': 5, 'b': 6}]
+        >>> get_col(data, 'a')
+        [1, 3, 5]
+        >>> get_col(data, 'b')
+        [2, 4, 6]
+        >>> get_col(data, 'nonexistent key')
+        []
+        >>> get_col([], 'a')
+        []
+    """
+    return list(set([entry[key] for entry in data if key in entry])
+)
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

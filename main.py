@@ -1,6 +1,6 @@
 """ 
 CSV file: Global-YouTube-Statistics.csv
-Top 995 YouTubers with their statistics
+Top 995 YouTube channels with their statistics
 Kaggle: https://www.kaggle.com/datasets/nelgiriyewithana/global-youtube-statistics-2023
 """
 from myfunctions import *
@@ -20,38 +20,20 @@ def main():
         reader = csv.DictReader(file)
         # store a list of dictionaries
         data = list(reader)
+    # user menu
+    while True:
+        print("1. View top YouTube channel by country")
+        print("2. Exit")
+        choice = input("Enter your choice: ")
 
-    # print a numbered list of the keys in the dictionary
-    for i, key in enumerate(data[0].keys()):
-        print(f"{i+1}. {key.replace('_', ' ')}")
-
-    # print the most common category
-    print(f"Most common category: \n{most_frequent(data, 'category')}\n")
-
-    # print the least common category
-    print(f"Least common category: \n{least_frequent(data, 'category')}\n")
-
-    # print channal with the most views
-    most_views = entry_max(data, 'video views')
-    print(f"Channel with the most views: \n{most_views['Youtuber']}\nViews: {most_views['video views']}\n")
-
-    # print average uploads per channel
-    print(f"Average uploads per channel: \n{avg_val(data, 'uploads')}\n")
-
-    # print channel with the most subscribers in the category 'Comedy'
-    filters = {'category': 'Comedy'}
-    most_subs = entry_max(filter_or(data, filters), 'subscribers')
-    print(f"Channel with the most subscribers in the category 'Comedy': \n{most_subs['Youtuber']}\nSubscribers: {most_subs['subscribers']}\n")
-
-    # Youtuber with the most subscribers not in the category 'Entertainment' or 'Music'
-    filters = {'category': ('Entertainment', 'Music', 'nan')}
-    most_subs = entry_max(filter_or(data, filters, True), 'subscribers')
-    print(f"Youtube channel with the most subscribers not in the category 'Entertainment' or 'Music': \n{most_subs['Youtuber']}\nCategory: {most_subs['category']}\nSubscribers: {most_subs['subscribers']}\n")
-
-    countries = filter_or(data, {'Country':'nan'}, True)
-    for country in get_column(countries, 'Country'):
-        youtuber = top_youtuber_by_country(data, country)
-        print(f"Top Youtube Channel in {country}: \n{youtuber['Youtuber']}\nSubscribers: {youtuber['subscribers']}\n")
+        if choice == "1":
+            country = input("Enter the country: ")
+            top_youtuber = top_youtuber_by_country(data, country)
+            print(f"The top YouTube channel in {country} is {top_youtuber['Youtuber']} with {top_youtuber['subscribers']} subscribers.")
+        elif choice == "2":
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 if __name__ == '__main__':
     main()

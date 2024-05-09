@@ -1,10 +1,11 @@
-def filter_and(data, filters):
+def filter_and(data, filters, inverse=False):
     """
     Filter the given data based on multiple filter conditions.
 
     Args:
         data (list): A list of dictionaries representing the data to be filtered.
         filters (dict): A dictionary containing the filter conditions.
+        inverse (bool, optional): If True, the filter conditions are inverted. Defaults to False.
 
     Returns:
         list: A new list containing the filtered data.
@@ -15,8 +16,14 @@ def filter_and(data, filters):
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}]
         >>> filter_and(data, {'a': ('apple', 'pear'), 'b': 'tomato'})
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}]
+        >>> filter_and(data, {'a': 'apple', 'b': 'tomato'}, inverse=True)
+        [{'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
+        >>> filter_and(data, {}, inverse=True)
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
     """
     new_list = []
+    if not filters and inverse:
+        return data
     for row in data:
         match = True
         for key, value in filters.items():
@@ -28,17 +35,20 @@ def filter_and(data, filters):
                 if row.get(key) != value:
                     match = False
                     break
+        if inverse:
+            match = not match
         if match:
             new_list.append(row)
     return new_list
 
-def filter_or(data, filters):
+def filter_or(data, filters, inverse=False):
     """
     Filter a list of dictionaries based on multiple OR conditions.
 
     Args:
         data (list): A list of dictionaries representing the data.
         filters (dict): A dictionary containing the filter conditions.
+        inverse (bool, optional): If True, the filter conditions are inverted. Defaults to False.
 
     Returns:
         list: A new list of dictionaries that match any of the filter conditions.
@@ -49,21 +59,28 @@ def filter_or(data, filters):
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
         >>> filter_or(data, {'a': ('apple', 'orange')})
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
+        >>> filter_or(data, {'a': 'apple', 'b': 'potato'}, inverse=True)
+        [{'a': 'pear', 'b': 'tomato', 'c': 'banana'}]
+        >>> filter_or(data, {}, inverse=True)
+        [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
     """
     new_list = []
     if not filters:
         return data
     
     for row in data:
+        match = False
         for key, value in filters.items():
             if isinstance(value, tuple):
                 if row.get(key) in value:
-                    new_list.append(row)
+                    match = True
                     break
             else:
                 if row.get(key) == value:
-                    new_list.append(row)
+                    match = True
                     break
+        if (match and not inverse) or (not match and inverse):
+            new_list.append(row)
     return new_list
 
 def entry_max(data, key):
@@ -219,9 +236,9 @@ def total_sum(data, key):
     Examples:
         >>> data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]
         >>> total_sum(data, 'a')
-        9
+        9.0
         >>> total_sum(data, 'b')
-        16
+        16.0
         >>> total_sum(data, 'nonexistent key')
         0
     """

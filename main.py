@@ -19,7 +19,7 @@ def main():
 
     # print a numbered list of the keys in the dictionary
     for i, key in enumerate(data[0].keys()):
-        print(f"{i+1}. {key.replace('.', ' ')}")
+        print(f"{i+1}. {key.replace('_', ' ')}")
 
 if __name__ == '__main__':
     main()

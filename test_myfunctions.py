@@ -104,7 +104,7 @@ def test_filter_or():
     assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}]
 
     filters = {}
-    assert filter_or(data, filters) == data
+    assert filter_or(data, filters) == []
 
     filters = {'a': ('apple', 'orange')}
     assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
@@ -114,6 +114,45 @@ def test_filter_or():
 
     filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
     assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
+    # Additional tests for inverse parameter
+    filters = {'a': 'orange', 'c': 'banana'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
+    filters = {'a': 'apple', 'b': 'cherry'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+
+    filters = {}
+    assert filter_or(data, filters, inverse=True) == data
+
+    filters = {'a': ('apple', 'orange')}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
+    filters = {'a': ('apple', 'orange'), 'b': 'potato'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+
+    # Additional tests for inverse parameter with empty data
+    data = []
+    filters = {'a': 'orange', 'c': 'banana'}
+    assert filter_or(data, filters, inverse=True) == []
+
+    filters = {'a': 'apple', 'b': 'cherry'}
+    assert filter_or(data, filters, inverse=True) == []
+
+    filters = {}
+    assert filter_or(data, filters, inverse=True) == []
+
+    filters = {'a': ('apple', 'orange')}
+    assert filter_or(data, filters, inverse=True) == []
+
+    filters = {'a': ('apple', 'orange'), 'b': 'potato'}
+    assert filter_or(data, filters, inverse=True) == []
+
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_or(data, filters, inverse=True) == []
 
 def test_avg_val():
     data = [{'a': '1', 'b': '2'}, {'a': '3', 'b': '4'}, {'a': '5', 'b': '6'}, {'a': 'invalid entry', 'b': '4'}]

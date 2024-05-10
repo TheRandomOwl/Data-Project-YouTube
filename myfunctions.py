@@ -69,8 +69,10 @@ def filter_or(data, filters, inverse=False):
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
     """
     new_list = []
-    if not filters:
+    if not filters and inverse:
         return data
+    elif not filters:
+        return new_list
     
     for row in data:
         match = False

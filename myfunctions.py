@@ -364,6 +364,115 @@ def get_column(data, key):
     """
     return list(set([entry[key] for entry in data if key in entry]))
 
+def inequality_and(data, filters):
+    """
+    Filter the given data based on inequality conditions.
+
+    Args:
+        data (list): a list of dictionaries to be filtered.
+        filters (dict): A dictionary containing the inequality conditions.
+                        Example: {'age': '>28', 'salary': ('<80000', '>=60000')} or {'age': '>=30', 'salary': '<70000'} or any combination of >, <, =, !, >=, <=
+
+    Returns:
+        list: A new list containing the filtered data.
+
+    Examples:
+        >>> data = [
+        ...     {'name': 'John', 'age': 25, 'salary': 50000},
+        ...     {'name': 'Jane', 'age': 30, 'salary': 60000},
+        ...     {'name': 'Bob', 'age': 35, 'salary': 70000}
+        ... ]
+        >>> filters = {'age': '>28', 'salary': ('<80000', '>=60000')}
+        >>> inequality_and(data, filters)
+        [{'name': 'Jane', 'age': 30, 'salary': 60000}, {'name': 'Bob', 'age': 35, 'salary': 70000}]
+        >>> filters = {'age': '>28', 'salary': ('>=60000', '<80000')}
+        >>> inequality_and(data, filters)
+        [{'name': 'Jane', 'age': 30, 'salary': 60000}, {'name': 'Bob', 'age': 35, 'salary': 70000}]
+        >>> filters = {'age': '<30'}
+        >>> inequality_and(data, filters)
+        [{'name': 'John', 'age': 25, 'salary': 50000}]
+        >>> filters = {'age': '>=30', 'salary': '<70000'}
+        >>> inequality_and(data, filters)
+        [{'name': 'Jane', 'age': 30, 'salary': 60000}]
+        >>> filters = {'age': '>=30', 'salary': '<60000'}
+        >>> inequality_and(data, filters)
+        []
+        >>> filters = {'age': ('>29.9', '<35.1')}
+        >>> inequality_and(data, filters)
+        [{'name': 'Jane', 'age': 30, 'salary': 60000}, {'name': 'Bob', 'age': 35, 'salary': 70000}]
+        >>> invalid_data = [{'name': 'John', 'age': 25, 'salary': '50k'}, {'name': 'Jane', 'age': 30, 'salary': 60000}]
+        >>> filters = {'salary': ('<80000', '>=10000')}
+        >>> inequality_and(invalid_data, filters)
+        []
+
+    """
+    new_list = []
+    for row in data:
+        match = True
+        for key, value in filters.items():
+            if isinstance(value, tuple):
+                for val in value:
+                    try:
+                        if val[0] == '>':
+                            if float(row.get(key, 0)) <= float(val[1:]):
+                                match = False
+                                break
+                        elif val[0] == '<':
+                            if float(row.get(key, 0)) >= float(val[1:]):
+                                match = False
+                                break
+                        elif val[0] == '=':
+                            if float(row.get(key, 0)) != float(val[1:]):
+                                match = False
+                                break
+                        elif val[0] == '!':
+                            if float(row.get(key, 0)) == float(val[1:]):
+                                match = False
+                                break
+                        elif val[0] == '>=':
+                            if float(row.get(key, 0)) < float(val[2:]):
+                                match = False
+                                break
+                        elif val[0] == '<=':
+                            if float(row.get(key, 0)) > float(val[2:]):
+                                match = False
+                                break
+                    except ValueError:
+                        match = False
+                        break
+            else:
+                try:
+                    if value[0] == '>':
+                        if float(row.get(key, 0)) <= float(value[1:]):
+                            match = False
+                            break
+                    elif value[0] == '<':
+                        if float(row.get(key, 0)) >= float(value[1:]):
+                            match = False
+                            break
+                    elif value[0] == '=':
+                        if float(row.get(key, 0)) != float(value[1:]):
+                            match = False
+                            break
+                    elif value[0] == '!':
+                        if float(row.get(key, 0)) == float(value[1:]):
+                            match = False
+                            break
+                    elif value[0] == '>=':
+                        if float(row.get(key, 0)) < float(value[2:]):
+                            match = False
+                            break
+                    elif value[0] == '<=':
+                        if float(row.get(key, 0)) > float(value[2:]):
+                            match = False
+                            break
+                except ValueError:
+                    match = False
+                    break
+        if match:
+            new_list.append(row)
+    return new_list
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()

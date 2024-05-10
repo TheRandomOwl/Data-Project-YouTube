@@ -95,11 +95,12 @@ def youtube_channels_creation_year(data):
         if month and month not in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]:
             print("Invalid month. Please enter a valid month (Jan-Dec) or press Enter to skip.")
             continue
-        
-        day = input("Enter the day of creation (DD) or press Enter to skip: ").strip()
-        if day and (not day.isdigit() or int(day) < 1 or int(day) > 31):
-            print("Invalid day. Please enter a valid day (1-31) or press Enter to skip.")
-            continue
+        day = ""
+        if month:
+            day = input("Enter the day of creation (DD) or press Enter to skip: ").strip()
+            if day and (not day.isdigit() or int(day) < 1 or int(day) > 31):
+                print("Invalid day. Please enter a valid day (1-31) or press Enter to skip.")
+                continue
 
         break
 

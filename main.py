@@ -85,7 +85,9 @@ def youtube_channels_creation_year(data):
     # get the creation year of the youtube channels. Asks for year, month, and day
     while True:
         year = input("Enter the year of creation (YYYY): ").strip()
-        if not year.isdigit() or len(year) != 4:
+        if year.lower() == "q":
+            return
+        elif not year.isdigit() or len(year) != 4:
             print("Invalid year. Please enter a valid 4-digit year.")
             continue
         

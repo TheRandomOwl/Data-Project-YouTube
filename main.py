@@ -138,7 +138,7 @@ def not_us_not_music_entertainment(data):
     data_copy = filter_or(data, {"Country": "US", "category": ("Music", "Entertainment", "nan")}, True)
     print("Top 5 channels that are not from the US and are not in the music or entertainment category:")
     for channel in data_copy[:5]:
-        print(channel["Title"])
+        print(f"{channel["Title"]}:", channel["category"])
     print()
 
 def quit_program(data):

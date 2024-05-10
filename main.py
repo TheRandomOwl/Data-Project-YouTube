@@ -136,6 +136,7 @@ def not_us_not_music_entertainment(data):
     print("Top 5 channels that are not from the US and are not in the music or entertainment category:")
     for channel in data_copy[:5]:
         print(channel["Title"])
+    print()
 
 def quit_program(data):
     print("Goodbye!")

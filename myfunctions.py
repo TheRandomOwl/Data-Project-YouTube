@@ -20,10 +20,14 @@ def filter_and(data, filters, inverse=False):
         [{'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
         >>> filter_and(data, {}, inverse=True)
         [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'banana'}]
+        >>> filter_and(data, {})
+        []
     """
     new_list = []
     if not filters and inverse:
         return data
+    elif not filters:
+        return new_list
     for row in data:
         match = True
         for key, value in filters.items():

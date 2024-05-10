@@ -21,13 +21,75 @@ def test_filter_and():
     assert filter_and(data, filters) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}]
 
     filters = {}
-    assert filter_and(data, filters) == data
+    assert filter_and(data, filters) == []
 
     filters = {'a': ('apple', 'pear'), 'b': 'potato'}
     assert filter_and(data, filters) == [{'a': 'apple', 'b': 'potato'}]
 
     filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
     assert filter_and(data, filters) == []
+
+    # Additional tests for inverse parameter
+    filters = {'a': 'apple', 'b': 'tomato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+
+    filters = {'a': 'pear', 'b': 'tomato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+
+    filters = {'a': 'apple', 'b': 'potato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}]
+
+    filters = {'a': 'banana', 'b': 'tomato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+
+    filters = {'a': 'apple'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato'}]
+
+    filters = {'b': 'tomato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'potato'}]
+
+    filters = {}
+    assert filter_and(data, filters, inverse=True) == data
+
+    filters = {'a': ('apple', 'pear'), 'b': 'potato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}]
+
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_and(data, filters, inverse=True) == [{'a': 'apple', 'b': 'tomato'}, {'a': 'pear', 'b': 'tomato'}, {'a': 'apple', 'b': 'potato'}]
+
+
+def test_filter_or():
+    data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, 
+            {'a': 'pear', 'b': 'tomato', 'c': 'orange'}, 
+            {'a': 'orange', 'b': 'potato', 'c': 'carrot'}
+            ]
+    
+    filters = {'a': 'orange', 'c': 'banana'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+    filters = {'a': 'apple', 'b': 'cherry'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}]
+    filters = {}
+    assert filter_or(data, filters) == data
+    filters = {'a': ('apple', 'orange')}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+    filters = {'a': ('apple', 'orange'), 'b': 'potato'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_or(data, filters) == [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, {'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+
+    # Additional tests for inverse parameter
+    filters = {'a': 'orange', 'c': 'banana'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+    filters = {'a': 'apple', 'b': 'cherry'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}, {'a': 'orange', 'b': 'potato', 'c': 'carrot'}]
+    filters = {}
+    assert filter_or(data, filters, inverse=True) == []
+    filters = {'a': ('apple', 'orange')}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+    filters = {'a': ('apple', 'orange'), 'b': 'potato'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
+    filters = {'a': ('invalid', 'invalid'), 'b': 'tomato'}
+    assert filter_or(data, filters, inverse=True) == [{'a': 'pear', 'b': 'tomato', 'c': 'orange'}]
 
 def test_filter_or():
     data = [{'a': 'apple', 'b': 'tomato', 'c': 'banana'}, 

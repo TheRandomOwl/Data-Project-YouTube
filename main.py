@@ -135,10 +135,10 @@ def top_ten_total_uploads(data):
     print(f"The total amount of uploads for the top 10 channels is {total_uploads}\n")
 
 def not_us_not_music_entertainment(data):
-    data_copy = filter_or(data, {"Country": "US", "category": ("Music", "Entertainment", "nan")}, True)
-    print("Top 5 channels that are not from the US and are not in the music or entertainment category:")
-    for channel in data_copy[:5]:
-        print(f"{channel["Title"]}:", channel["category"])
+    data_copy = filter_or(data, {"Country": ("United States", "nan"), "category": ("Music", "Entertainment", "nan")}, True)
+    print("Top 10 channels that are not from the US and are not in the music or entertainment category:")
+    for i, channel in enumerate(data_copy[:10], 1):
+        print(f"{i}.) {channel['Title']}: Category - {channel['category']}, Country - {channel['Country']}")
     print()
 
 def quit_program(data):
@@ -165,7 +165,7 @@ def main():
         "5": (popular_categories, "Get the most popular categories"),
         "6": (top_ten_total_uploads, "Get the total amount of uploads for the top 10 channels"),
         "7": (least_popular_category, "Get the least popular category"),
-        "8": (not_us_not_music_entertainment, "Get top 5 channels that are not from the US and are not in the music or entertainment category"),
+        "8": (not_us_not_music_entertainment, "Get top 10 channels that are not from the US and are not in the music or entertainment category"),
         "q": (quit_program, "Quit the program")
         # add more options here
     }
